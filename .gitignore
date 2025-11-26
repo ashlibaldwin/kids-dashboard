@@ -1,0 +1,18 @@
+# Environment variables
+.env
+
+# Packaged output files
+kid-dash-packaged.html
+*.html.bak
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+

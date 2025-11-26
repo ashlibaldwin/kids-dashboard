@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{KIDS_NAMES}}'s Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #E8F5F7 0%, #F0F4F8 50%, #F8E8F0 100%);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: #2D3748;
+            overflow: hidden;
+        }
+        
+        .dashboard {
+            width: 100%;
+            height: calc(100vh - 4rem);
+            max-width: 1920px;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: auto 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 
+                0 1px 2px rgba(0, 0, 0, 0.02),
+                0 4px 12px rgba(0, 0, 0, 0.04),
+                0 16px 32px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.03),
+                0 8px 16px rgba(0, 0, 0, 0.06),
+                0 24px 48px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Header Section */
+        .greeting {
+            grid-column: 1 / 13;
+            text-align: center;
+            padding: 1.5rem 2rem;
+        }
+        
+        .greeting h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Today Events */
+        .today {
+            grid-column: 1 / 7;
+            padding: 2rem;
+        }
+        
+        /* Christmas Countdown */
+        .countdown {
+            grid-column: 7 / 10;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .countdown-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .countdown-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #DC2626;
+            margin-bottom: 0.125rem;
+        }
+        
+        .countdown-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #991B1B;
+        }
+        
+        /* Weather Card */
+        .weather {
+            grid-column: 10 / 13;
+            text-align: center;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .weather-icon {
+            font-size: 5rem;
+        }
+        
+        .weather-desc {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2D3748;
+        }
+        
+        .season-divider {
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(150, 150, 150, 0.3), transparent);
+            margin: 0.5rem 0;
+        }
+        
+        .season-display {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #2D3748;
+            text-align: center;
+            line-height: 1.8;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .season-display .season-part {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        
+        .season-display .season-answer {
+            font-weight: 700;
+            color: #1A202C;
+        }
+        
+        .today h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #2D3748;
+        }
+        
+        .event {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .event-icon {
+            font-size: 2rem;
+        }
+        
+        .event-time {
+            font-size: 1rem;
+            color: #718096;
+            margin-left: auto;
+        }
+        
+        .today-events {
+            text-align: center;
+            color: #718096;
+        }
+        
+        /* Jobs Card */
+        .jobs {
+            grid-column: 7 / 13;
+            padding: 2rem 2.5rem 1.5rem 2.5rem;
+        }
+        
+        .jobs h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #2D3748;
+        }
+        
+        .jobs-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.25rem;
+            align-items: start;
+            min-height: 420px;
+        }
+        
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        /* Progress bar panel (right third) */
+        .jobs-progress {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .jobs-progress-track {
+            width: 80px;
+            height: 75%;
+            border-radius: 20px;
+            border: 4px solid #6366F1;
+            background: rgba(99, 102, 241, 0.08);
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(99, 102, 241, 0.25);
+        }
+        
+        .jobs-progress-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 0%;
+            background: linear-gradient(180deg, #6366F1 0%, #8B5CF6 100%);
+            transition: height 400ms ease;
+        }
+        
+        .jobs-progress-percent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1rem;
+            font-weight: 800;
+            color: #374151;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+        }
+        
+        .job {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+            padding: 1rem 1.25rem;
+            border-radius: 16px;
+            transition: all 0.2s;
+            min-height: 80px;
+        }
+        
+        .job:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: scale(1.02);
+        }
+        
+        .job-main { /* left cluster: icon + text */
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .job-icon {
+            font-size: 3rem;
+        }
+
+        .job-toggle {
+            width: 2.25rem;
+            height: 2.25rem;
+            accent-color: #6366F1;
+        }
+
+        .job-done {
+            opacity: 0.6;
+        }
+
+        /* Celebration overlay */
+        .jobs {
+            position: relative;
+        }
+        
+        .jobs-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            animation: overlayFade 2000ms ease-out forwards;
+        }
+        
+        .jobs-overlay-emoji {
+            font-size: 6rem;
+        }
+        
+        .jobs-overlay-standalone {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.5rem;
+            pointer-events: none;
+            animation: emojiPop 3000ms ease-out forwards;
+        }
+        
+        .jobs-overlay-text {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #1F2937;
+            letter-spacing: 0.5px;
+        }
+        
+        @keyframes overlayFade {
+            0% { opacity: 0; }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        @keyframes emojiPop {
+            0% { transform: scale(0.6); opacity: 0; }
+            15% { opacity: 1; }
+            35% { transform: scale(1.25); }
+            100% { transform: scale(1); opacity: 0; }
+        }
+
+        /* Ensure Twemoji images match surrounding text size */
+        img.emoji {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.15em;
+        }
+        
+        .bedtime-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid rgba(139, 92, 246, 0.2);
+        }
+        
+        .bedtime-section h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #5B21B6;
+        }
+        
+        /* Week View */
+        .week {
+            grid-column: 1 / 7;
+            padding: 2rem 2.5rem 1.5rem 2.5rem;
+        }
+        
+        .week h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #2D3748;
+        }
+        
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1rem;
+            text-align: center;
+        }
+        
+        .day {
+            padding: 1rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.4);
+            transition: all 0.2s;
+        }
+        
+        .day.active-day {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            border: 2px solid rgba(99, 102, 241, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .day-name {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #4A5568;
+        }
+        
+        .day-icon {
+            font-size: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .today-marker {
+            font-size: 1.5rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Greeting Header -->
+        <div class="card greeting">
+            <h1 id="greeting">Good Morning, {{KIDS_NAMES}}! 👋</h1>
+        </div>
+        
+        <!-- Today's Events -->
+        <div class="card today">
+            <h2><span id="dayOfWeek">Today is ...</span></h2>
+            <div id="todayEvents" class="today-events">
+                Loading events...
+            </div>
+        </div>
+        
+        <!-- Christmas Countdown -->
+        <div class="card countdown">
+            <div class="countdown-icon">🎄</div>
+            <div class="countdown-number" id="christmasCountdown">62</div>
+            <div class="countdown-label">days til Christmas!</div>
+        </div>
+        
+        <!-- Weather Card -->
+        <div class="card weather">
+            <div class="weather-icon" id="weatherIcon">☀️</div>
+            <div class="weather-desc" id="weatherDesc">Sunny & Warm</div>
+            <div class="season-divider"></div>
+            <div class="season-display" id="season">
+                <div class="season-part">The season is <span class="season-answer" id="seasonAnswer">fall</span> 🍂</div>
+                <div class="season-part">The month is <span class="season-answer" id="monthAnswer">october</span> 📅</div>
+            </div>
+        </div>
+        
+        <!-- Week View -->
+        <div class="card week">
+            <h2>This Week</h2>
+            <div class="week-grid" id="weekGrid">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Jobs Card -->
+        <div class="card jobs">
+            <h2>{{KID1_NAME}}'s Chores</h2>
+            <div class="jobs-content">
+                <div class="jobs-grid" id="jobsList">
+                    <div class="loading">Loading chores…</div>
+                </div>
+                <div class="jobs-progress" aria-label="Completion">
+                    <div class="jobs-progress-track">
+                        <div class="jobs-progress-fill" id="jobsProgressFill"></div>
+                        <div class="jobs-progress-percent" id="jobsProgressPercent">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Configuration - these values are replaced by the packaging script
+        const CALENDAR_ID = '{{CALENDAR_ID}}';
+        const API_KEY = '{{API_KEY}}';
+        const SHEET_CSV_URL_ORIGINAL = '{{SHEET_CSV_URL_ORIGINAL}}';
+        
+        // Cache the redirect URL (it changes but stays valid for a while)
+        let cachedRedirectUrl = null;
+        let redirectUrlCacheTime = 0;
+        const REDIRECT_URL_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+        
+        // Get the actual CSV URL (fetches redirect URL first time, then uses cached version)
+        async function getActualSheetUrl() {
+            // Use cached redirect URL if it's still fresh
+            if (cachedRedirectUrl && Date.now() - redirectUrlCacheTime < REDIRECT_URL_CACHE_DURATION) {
+                console.log('[Jobs] Using cached redirect URL');
+                return cachedRedirectUrl;
+            }
+            
+            console.log('[Jobs] Fetching redirect URL from original URL...');
+            
+            try {
+                // Use XHR to get the HTML redirect page
+                const redirectUrl = await new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    const url = SHEET_CSV_URL_ORIGINAL + '&_redirect=' + Date.now();
+                    xhr.open('GET', url, true);
+                    xhr.timeout = 10000;
+                    
+                    xhr.onload = function() {
+                        if (xhr.status >= 200 && xhr.status < 400) {
+                            const html = xhr.responseText || '';
+                            // Extract redirect URL from HTML
+                            const match = html.match(/HREF="([^"]+)"/i);
+                            if (match && match[1]) {
+                                console.log('[Jobs] Extracted redirect URL:', match[1]);
+                                resolve(match[1]);
+                            } else {
+                                // If no redirect found, maybe it went directly to CSV
+                                if (html.includes('Kid,Chore') || !html.trim().startsWith('<')) {
+                                    // Already CSV, return original URL
+                                    resolve(SHEET_CSV_URL_ORIGINAL);
+                                } else {
+                                    reject(new Error('Could not find redirect URL in response'));
+                                }
+                            }
+                        } else {
+                            reject(new Error(`HTTP ${xhr.status}`));
+                        }
+                    };
+                    
+                    xhr.onerror = () => reject(new Error('Network error getting redirect URL'));
+                    xhr.ontimeout = () => reject(new Error('Timeout getting redirect URL'));
+                    xhr.send();
+                });
+                
+                // Cache it
+                cachedRedirectUrl = redirectUrl;
+                redirectUrlCacheTime = Date.now();
+                console.log('[Jobs] Got redirect URL, cached for', REDIRECT_URL_CACHE_DURATION/1000/60, 'minutes');
+                return redirectUrl;
+                
+            } catch (e) {
+                console.error('[Jobs] Failed to get redirect URL:', e);
+                // Fallback to original URL
+                return SHEET_CSV_URL_ORIGINAL;
+            }
+        }
+        
+        // Map event keywords to icons
+        const EVENT_ICONS = {
+            'preschool': '🎒',
+            'school': '🎒',
+            'garbage': '🚚',
+            'trash': '🗑️',
+            'pizza': '🍕',
+            'soccer': '⚽',
+            'library': '📚',
+            'doctor': '🩺',
+            'dentist': '🦷',
+            'birthday': '🎂',
+            'park': '🏞️',
+            'playdate': '🧸',
+            'default': '📅'
+        };
+        
+        // Comprehensive emoji regex pattern - matches all Unicode emoji including ZWJ sequences (like 🏋️‍♀️)
+        // This pattern matches emoji sequences including zero-width joiners for gendered emojis
+        // Matches: emoji + optional variation selector + (ZWJ + emoji)* for sequences like 🏋️‍♀️
+        const emojiRegexPattern = /^\p{Emoji}\uFE0F?(\u200D\p{Emoji}\uFE0F?)*/u;
+        
+        function getEventIcon(eventTitle) {
+            const trimmedTitle = eventTitle.trim();
+            if (!trimmedTitle) return EVENT_ICONS.default;
+            
+            const firstChar = trimmedTitle.charAt(0);
+            
+            // If the title starts with a letter or number, do NOT treat it as an emoji
+            if (/^[A-Za-z0-9]/.test(firstChar)) {
+                const title = eventTitle.toLowerCase();
+                for (const [keyword, icon] of Object.entries(EVENT_ICONS)) {
+                    if (title.includes(keyword)) {
+                        return icon;
+                    }
+                }
+                return EVENT_ICONS.default;
+            }
+            
+            // Check if it starts with an emoji using Unicode property classes
+            // This properly handles all emojis including ZWJ sequences (like 🏋️‍♀️)
+            const match = trimmedTitle.match(emojiRegexPattern);
+            if (match && match[0]) {
+                // Extract the complete emoji sequence (including ZWJ sequences for gendered emojis)
+                // This handles emojis like 🏋️‍♀️ (woman lifting weights) as a single unit
+                const firstEmoji = match[0];
+                return firstEmoji.trim();
+            }
+            
+            // Fallback to keyword mapping/default
+            const title = eventTitle.toLowerCase();
+            for (const [keyword, icon] of Object.entries(EVENT_ICONS)) {
+                if (title.includes(keyword)) {
+                    return icon;
+                }
+            }
+            return EVENT_ICONS.default;
+        }
+        
+        // Fetch events from Google Calendar
+        async function fetchCalendarEvents() {
+            const now = new Date();
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+            
+            const timeMin = startOfDay.toISOString();
+            const timeMax = endOfDay.toISOString();
+            
+            const url = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${API_KEY}&timeMin=${timeMin}&timeMax=${timeMax}&singleEvents=true&orderBy=startTime`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.items && data.items.length > 0) {
+                    displayTodayEvents(data.items);
+                } else {
+                    document.getElementById('todayEvents').innerHTML = '<div class="event">No events today! 🎉</div>';
+                }
+            } catch (error) {
+                console.error('Error fetching calendar:', error);
+                document.getElementById('todayEvents').innerHTML = '<div class="event">Could not load events</div>';
+            }
+        }
+        
+        function displayTodayEvents(events) {
+            const container = document.getElementById('todayEvents');
+            container.innerHTML = '';
+            
+            events.forEach(event => {
+                const eventDiv = document.createElement('div');
+                eventDiv.className = 'event';
+                
+                const icon = getEventIcon(event.summary);
+                
+                // Remove leading emoji from title for display (but never strip numbers/letters)
+                const trimmedSummary = event.summary.trim();
+                let displayTitle = trimmedSummary;
+                if (!/^[A-Za-z0-9]/.test(trimmedSummary.charAt(0))) {
+                    // Use same emoji regex as getEventIcon to extract the complete emoji sequence
+                    // This properly handles ZWJ sequences (like 🏋️‍♀️) as a single unit
+                    const emojiMatch = trimmedSummary.match(emojiRegexPattern);
+                    if (emojiMatch && emojiMatch[0]) {
+                        // Remove the complete emoji sequence (including ZWJ parts)
+                        displayTitle = trimmedSummary.substring(emojiMatch[0].length).trim() || trimmedSummary;
+                    }
+                }
+                
+                let timeStr = '';
+                if (event.start.dateTime) {
+                    const eventTime = new Date(event.start.dateTime);
+                    timeStr = eventTime.toLocaleTimeString('en-US', { 
+                        hour: 'numeric', 
+                        minute: '2-digit',
+                        hour12: true 
+                    });
+                }
+                
+                eventDiv.innerHTML = `
+                    <span class="event-icon">${icon}</span>
+                    <span>${displayTitle}</span>
+                    ${timeStr ? `<span class="event-time">${timeStr}</span>` : ''}
+                `;
+                
+                container.appendChild(eventDiv);
+            });
+
+            // Normalize emoji rendering for events - wait a tick to ensure Twemoji is loaded
+            setTimeout(() => {
+                if (window.twemoji) {
+                    twemoji.parse(container, { folder: 'svg', ext: '.svg' });
+                }
+            }, 100);
+        }
+        
+        // Fetch week events
+        async function fetchWeekEvents() {
+            const now = new Date();
+            const startOfWeek = new Date(now);
+            startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
+            startOfWeek.setHours(0, 0, 0, 0);
+            
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 7);
+            
+            const timeMin = startOfWeek.toISOString();
+            const timeMax = endOfWeek.toISOString();
+            
+            const url = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${API_KEY}&timeMin=${timeMin}&timeMax=${timeMax}&singleEvents=true&orderBy=startTime`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                displayWeekView(data.items || []);
+            } catch (error) {
+                console.error('Error fetching week events:', error);
+                displayWeekView([]);
+            }
+        }
+        
+        function displayWeekView(events) {
+            const weekGrid = document.getElementById('weekGrid');
+            const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            const today = new Date().getDay();
+            
+            // Group events by day
+            const eventsByDay = {};
+            events.forEach(event => {
+                let eventDate;
+                if (event.start.dateTime) {
+                    // Timed event - parse with timezone info
+                    eventDate = new Date(event.start.dateTime);
+                } else {
+                    // All-day event - parse date string as local date to avoid timezone issues
+                    const dateStr = event.start.date;
+                    eventDate = new Date(dateStr + 'T00:00:00');
+                }
+                const dayOfWeek = eventDate.getDay();
+                
+                if (!eventsByDay[dayOfWeek]) {
+                    eventsByDay[dayOfWeek] = [];
+                }
+                eventsByDay[dayOfWeek].push(event);
+            });
+            
+            weekGrid.innerHTML = '';
+            
+            days.forEach((day, index) => {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'day';
+                if (index === today) {
+                    dayDiv.classList.add('active-day');
+                }
+                
+                let icons = '';
+                if (eventsByDay[index]) {
+                    const iconList = eventsByDay[index]
+                        .map(e => getEventIcon(e.summary))
+                        .slice(0, 3); // Max 3 icons
+                    icons = iconList.map(icon => `<span>${icon}</span>`).join('');
+                }
+                
+                if (!icons) {
+                    icons = '<span>🏠</span>'; // Home icon for days with no events
+                }
+                
+                dayDiv.innerHTML = `
+                    <div class="day-name">${day}</div>
+                    <div class="day-icon">${icons}</div>
+                    ${index === today ? '<div class="today-marker">⬆️</div>' : ''}
+                `;
+                
+                weekGrid.appendChild(dayDiv);
+            });
+
+            // Normalize emoji rendering for week icons
+            if (window.twemoji) {
+                twemoji.parse(weekGrid, { folder: 'svg', ext: '.svg' });
+            }
+        }
+
+        // ---------- Jobs (Google Sheet CSV + local daily completion) ----------
+        function getTodayKey() {
+            const d = new Date();
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            return `jobs-${yyyy}-${mm}-${dd}`;
+        }
+
+        function loadCompletionMap() {
+            try {
+                return JSON.parse(localStorage.getItem(getTodayKey()) || '{}');
+            } catch {
+                return {};
+            }
+        }
+
+        function saveCompletionMap(map) {
+            localStorage.setItem(getTodayKey(), JSON.stringify(map));
+        }
+
+        function isTodayAllowed(recurs) {
+            if (!recurs) return true;
+            const r = recurs.trim().toLowerCase();
+            const dayNames = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+            const dayAbbrevs = ['sun','mon','tue','wed','thu','fri','sat'];
+            const todayIndex = new Date().getDay();
+            const today = dayNames[todayIndex];
+            
+            // Log for debugging
+            console.log(`[Jobs] Checking if today (${today}) matches recurs: "${r}"`);
+            
+            if (r === 'every day' || r === 'daily') return true;
+            
+            if (r.startsWith('every ')) {
+                const day = r.replace('every ', '').trim();
+                // Try full day name match
+                if (dayNames.includes(day)) {
+                    const matches = day === today;
+                    console.log(`[Jobs] Full day name match: "${day}" === "${today}" = ${matches}`);
+                    return matches;
+                }
+                // Try abbreviated day name match
+                const abbrevIndex = dayAbbrevs.indexOf(day);
+                if (abbrevIndex !== -1) {
+                    const matches = abbrevIndex === todayIndex;
+                    console.log(`[Jobs] Abbrev day match: "${day}" (index ${abbrevIndex}) === today (index ${todayIndex}) = ${matches}`);
+                    return matches;
+                }
+                console.log(`[Jobs] Day "${day}" not recognized`);
+                return false;
+            }
+            
+            // Direct day name match (without "every")
+            if (dayNames.includes(r)) {
+                const matches = r === today;
+                console.log(`[Jobs] Direct day name match: "${r}" === "${today}" = ${matches}`);
+                return matches;
+            }
+            if (dayAbbrevs.includes(r)) {
+                const abbrevIndex = dayAbbrevs.indexOf(r);
+                const matches = abbrevIndex === todayIndex;
+                console.log(`[Jobs] Direct abbrev match: "${r}" (index ${abbrevIndex}) === today (index ${todayIndex}) = ${matches}`);
+                return matches;
+            }
+            
+            if (r === 'weekdays') {
+                const matches = !['saturday','sunday'].includes(today);
+                console.log(`[Jobs] Weekdays check: today is ${today}, matches = ${matches}`);
+                return matches;
+            }
+            if (r === 'weekends') {
+                const matches = ['saturday','sunday'].includes(today);
+                console.log(`[Jobs] Weekends check: today is ${today}, matches = ${matches}`);
+                return matches;
+            }
+            
+            // Unknown pattern -> do not show
+            console.log(`[Jobs] Unknown recurs pattern: "${r}", returning false`);
+            return false;
+        }
+
+        function csvToRows(text) {
+            // CSV parser: handles basic CSV with trimming
+            // Split by line, then by comma, and trim each field
+            const lines = text.trim().split(/\r?\n/).filter(Boolean);
+            return lines.map(line => {
+                // Split by comma and trim each field
+                // This works for simple CSV without quoted commas
+                return line.split(',').map(f => f.trim());
+            });
+        }
+
+
+        // Try XMLHttpRequest as fallback (doesn't trigger CORS preflight)
+        // XHR automatically follows redirects, but we need to check the response
+        function fetchWithXHR(url, timeoutMs = 20000) {
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                const cacheBuster = Date.now();
+                const urlWithCache = url + (url.includes('?') ? '&' : '?') + '_t=' + cacheBuster;
+                
+                console.log('[Jobs] XHR fetching:', urlWithCache);
+                
+                xhr.open('GET', urlWithCache, true);
+                xhr.timeout = timeoutMs;
+                // Don't set custom headers - they can trigger CORS preflight
+                // Cache-busting query parameter is sufficient
+                // XHR automatically follows redirects (including 302)
+                
+                xhr.onload = function() {
+                    console.log('[Jobs] XHR onload - status:', xhr.status, 'readyState:', xhr.readyState);
+                    console.log('[Jobs] XHR response length:', xhr.responseText?.length || 0);
+                    console.log('[Jobs] XHR response type:', xhr.responseType);
+                    console.log('[Jobs] XHR response URL:', xhr.responseURL || 'not available');
+                    
+                    // Check if we got HTML (redirect page) instead of CSV
+                    const responseText = xhr.responseText || '';
+                    if (responseText.trim().startsWith('<HTML>') || responseText.trim().startsWith('<!DOCTYPE')) {
+                        console.warn('[Jobs] XHR got HTML instead of CSV, might be redirect issue');
+                        // Try to extract redirect URL from HTML
+                        const redirectMatch = responseText.match(/HREF="([^"]+)"/i);
+                        if (redirectMatch && redirectMatch[1]) {
+                            console.log('[Jobs] Found redirect URL in response, retrying with:', redirectMatch[1]);
+                            console.log('[Jobs] Following redirect...');
+                            // Recursively try the redirect URL
+                            return fetchWithXHR(redirectMatch[1], timeoutMs).then(resolve).catch(reject);
+                        }
+                        reject(new Error('Got HTML redirect page instead of CSV'));
+                        return;
+                    }
+                    
+                    if (xhr.status >= 200 && xhr.status < 400) { // Accept redirects (3xx)
+                        if (!responseText || responseText.trim().length === 0) {
+                            console.error('[Jobs] XHR returned empty response');
+                            reject(new Error('Empty response from server'));
+                            return;
+                        }
+                        console.log('[Jobs] XHR success - first 200 chars:', responseText.substring(0, 200));
+                        console.log(`[Jobs] XHR succeeded: ${responseText.length} bytes`);
+                        resolve({
+                            ok: true,
+                            status: xhr.status,
+                            statusText: xhr.statusText,
+                            text: () => Promise.resolve(responseText)
+                        });
+                    } else {
+                        console.error('[Jobs] XHR failed with status:', xhr.status);
+                        reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`));
+                    }
+                };
+                
+                xhr.onerror = function(e) {
+                    console.error('[Jobs] XHR onerror event:', e);
+                    console.error('[Jobs] XHR network error');
+                    reject(new Error('Network error'));
+                };
+                
+                xhr.ontimeout = function() {
+                    console.error('[Jobs] XHR timeout');
+                    console.error(`[Jobs] XHR timeout after ${timeoutMs}ms`);
+                    reject(new Error(`Timeout after ${timeoutMs}ms`));
+                };
+                
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        console.log('[Jobs] XHR readyState DONE, status:', xhr.status);
+                    }
+                };
+                
+                try {
+                    xhr.send();
+                    console.log('[Jobs] XHR send() called');
+                } catch (e) {
+                    console.error('[Jobs] XHR send() exception:', e);
+                    reject(new Error(`XHR failed: ${e.message}`));
+                }
+            });
+        }
+
+        // Fetch with retry logic, timeout, and cache busting
+        // Optimized for faster initial attempts with shorter timeouts
+        async function fetchWithRetry(url, maxRetries = 5, timeoutMs = 20000) {
+            // Add cache-busting query parameter
+            const cacheBuster = Date.now();
+            const urlWithCache = url + (url.includes('?') ? '&' : '?') + '_t=' + cacheBuster;
+            
+            console.log(`[Jobs] Starting fetch to: ${url}`);
+            
+            // Try fetch() first (may work better on some systems, especially Pi)
+            
+            // Try simple fetch() first with a timeout
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+                
+                const simpleRes = await fetch(urlWithCache, { 
+                    cache: 'no-store',
+                    mode: 'cors',
+                    credentials: 'omit',
+                    keepalive: true,
+                    signal: controller.signal,
+                    redirect: 'follow' // Explicitly follow redirects (default, but making it clear)
+                });
+                
+                clearTimeout(timeoutId);
+                
+                // Fetch should automatically follow redirects, but check the final URL
+                const finalUrl = simpleRes.url || urlWithCache;
+                console.log('[Jobs] Fetch final URL:', finalUrl);
+                
+                if (simpleRes.ok) {
+                    // Check if we got HTML instead of CSV (might happen if redirect failed)
+                    const contentType = simpleRes.headers.get('content-type') || '';
+                    const clonedRes = simpleRes.clone(); // Clone so we can read it
+                    const responseText = await clonedRes.text();
+                    
+                    if (responseText.trim().startsWith('<HTML>') || responseText.trim().startsWith('<!DOCTYPE')) {
+                        console.warn('[Jobs] Fetch got HTML instead of CSV, extracting redirect...');
+                        // Try to extract redirect URL from HTML
+                        const redirectMatch = responseText.match(/HREF="([^"]+)"/i);
+                        if (redirectMatch && redirectMatch[1]) {
+                            console.log('[Jobs] Found redirect URL in HTML, following:', redirectMatch[1]);
+                            console.log('[Jobs] Following redirect URL from HTML...');
+                            const redirectController = new AbortController();
+                            const redirectTimeout = setTimeout(() => redirectController.abort(), 10000);
+                            const redirectRes = await fetch(redirectMatch[1], {
+                                cache: 'no-store',
+                                mode: 'cors',
+                                credentials: 'omit',
+                                signal: redirectController.signal
+                            });
+                            clearTimeout(redirectTimeout);
+                            if (redirectRes.ok) {
+                                console.log('[Jobs] Fetch succeeded after following redirect!');
+                                return redirectRes;
+                            }
+                        }
+                        throw new Error('Got HTML redirect page instead of CSV');
+                    }
+                    
+                    console.log('[Jobs] Fetch API succeeded on first try!');
+                    return simpleRes;
+                } else {
+                    throw new Error(`HTTP ${simpleRes.status}: ${simpleRes.statusText}`);
+                }
+            } catch (fetchError) {
+                if (fetchError.name === 'AbortError') {
+                    console.log('[Jobs] Simple fetch timeout');
+                } else {
+                    console.log('[Jobs] Simple fetch failed:', fetchError.message);
+                }
+                // Continue to try XHR
+            }
+            
+            // Try XHR as fallback (works on some systems when fetch doesn't)
+            console.log('[Jobs] Fetch failed, trying XMLHttpRequest...');
+            try {
+                const xhrResponse = await fetchWithXHR(url, timeoutMs);
+                console.log('[Jobs] XHR succeeded!');
+                return xhrResponse;
+            } catch (xhrError) {
+                console.error(`[Jobs] XHR also failed: ${xhrError.message}`);
+                // Fall through to fetch() retry loop
+            }
+            
+            // Try fetch() as fallback (might work without custom headers)
+            for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                const controller = new AbortController();
+                // Use shorter timeout for first few attempts, longer for later ones
+                const attemptTimeout = attempt <= 2 ? 10000 : timeoutMs;
+                const timeoutId = setTimeout(() => {
+                    console.warn(`[Jobs] Request timeout on attempt ${attempt}`);
+                    controller.abort();
+                }, attemptTimeout);
+                
+                try {
+                    
+                    // Use requestAnimationFrame to ensure we're not throttled
+                    await new Promise(resolve => requestAnimationFrame(resolve));
+                    
+                    // Don't send custom headers that trigger CORS preflight
+                    // The cache-busting query parameter is sufficient
+                    const res = await fetch(urlWithCache, { 
+                        cache: 'no-store',
+                        signal: controller.signal,
+                        mode: 'cors',
+                        credentials: 'omit',
+                        keepalive: true // Helps with background requests
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    console.log(`[Jobs] Response status: ${res.status} ${res.statusText}`);
+                    
+                if (!res.ok) {
+                        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+                    }
+                    
+                    console.log(`[Jobs] Success on attempt ${attempt}!`);
+                    console.log(`[Jobs] Fetch successful on attempt ${attempt}`);
+                    return res;
+                    
+                } catch (error) {
+                    clearTimeout(timeoutId);
+                    
+                    const errorMsg = error.name === 'AbortError' 
+                        ? `Timeout after ${attemptTimeout}ms`
+                        : error.message || error.toString();
+                    
+                    console.error(`[Jobs] Fetch attempt ${attempt}/${maxRetries} failed:`, errorMsg);
+                    console.error(`[Jobs] Attempt ${attempt} failed: ${errorMsg}`);
+                    
+                    if (attempt < maxRetries) {
+                        // Shorter delays for first attempts, longer for later
+                        const delay = attempt <= 2 ? 500 : Math.min(1000 * Math.pow(2, attempt - 3), 8000);
+                        console.log(`[Jobs] Retrying in ${delay}ms...`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    } else if (attempt === maxRetries) {
+                        // Last attempt failed - we already tried XHR first, so just throw
+                        throw new Error(`All attempts failed. Last error: ${errorMsg}`);
+                    } else {
+                        throw error;
+                    }
+                }
+            }
+        }
+
+        async function fetchJobsFromSheet() {
+            try {
+                console.log('[Jobs] fetchJobsFromSheet() starting...');
+                
+                // Get the actual redirect URL first
+                const actualUrl = await getActualSheetUrl();
+                console.log('[Jobs] Using URL:', actualUrl);
+                
+                const res = await fetchWithRetry(actualUrl, 5, 20000);
+                const csv = await res.text();
+                
+                if (!csv || csv.trim().length === 0) {
+                    console.error('Empty CSV response');
+                    // Reset success flag on empty response so visibility listener can retry
+                    jobsLoadedSuccessfully = false;
+                    const container = document.getElementById('jobsList');
+                    if (container) {
+                        container.innerHTML = '<div class="loading" style="color: #DC2626;">Empty response from sheet. Retrying...</div>';
+                    }
+                    // Retry after a delay
+                    setTimeout(() => refreshJobs(), 5000);
+                    return [];
+                }
+                
+                const rows = csvToRows(csv);
+                if (rows.length < 2) {
+                    console.warn('CSV has less than 2 rows');
+                    return [];
+                }
+                
+                const header = rows[0].map(h => h.trim().toLowerCase());
+                const idxKid = header.indexOf('kid');
+                const idxChore = header.indexOf('chore');
+                const idxRecurs = header.indexOf('recurs');
+                const idxIcon = header.indexOf('icon');
+                const idxActive = header.indexOf('active');
+                
+                if (idxKid === -1 || idxChore === -1) {
+                    console.error('Missing required columns: kid or chore');
+                    return [];
+                }
+                
+                const jobs = [];
+                const debugRows = [];
+                for (let i = 1; i < rows.length; i++) {
+                    const r = rows[i];
+                    if (!r || r.length === 0) continue;
+                    const kid = (r[idxKid] || '').trim();
+                    const chore = (r[idxChore] || '').trim();
+                    const recurs = (r[idxRecurs] || '').trim();
+                    const icon = (idxIcon === -1 ? '' : (r[idxIcon] || '')).trim();
+                    const active = (idxActive === -1 ? 'true' : (r[idxActive] || '')).trim().toLowerCase();
+                    
+                    const debugRow = {
+                        row: i + 1,
+                        kid,
+                        chore,
+                        recurs,
+                        icon,
+                        active,
+                        skippedReasons: []
+                    };
+                    
+                    if (!kid || !chore) {
+                        debugRow.skippedReasons.push('missing kid or chore');
+                        debugRows.push(debugRow);
+                        continue;
+                    }
+                    if (active && active !== 'true') {
+                        debugRow.skippedReasons.push(`inactive (${active})`);
+                        debugRows.push(debugRow);
+                        continue;
+                    }
+                    if (kid.toLowerCase() !== '{{KID1_NAME_LOWER}}') {
+                        debugRow.skippedReasons.push(`not {{KID1_NAME_LOWER}} (${kid})`);
+                        debugRows.push(debugRow);
+                        continue;
+                    }
+                    if (!isTodayAllowed(recurs)) {
+                        debugRow.skippedReasons.push(`not allowed today (${recurs})`);
+                        debugRows.push(debugRow);
+                        continue;
+                    }
+                    jobs.push({ kid, chore, recurs, icon });
+                    debugRows.push({ ...debugRow, included: true });
+                }
+                console.log(`[Jobs] Parsed ${rows.length - 1} rows, found ${jobs.length} matching jobs`);
+                console.log('[Jobs] Debug row analysis:', debugRows);
+                console.log(`[Jobs] Parsed: ${rows.length - 1} rows, ${jobs.length} jobs for {{KID1_NAME}}`);
+                return jobs;
+            } catch (e) {
+                const errorMsg = e.message || e.toString() || 'Unknown error';
+                console.error('[Jobs] Error fetching jobs CSV:', e);
+                console.error('[Jobs] Error details:', {
+                    name: e.name,
+                    message: errorMsg,
+                    stack: e.stack
+                });
+                
+                // Check if it's a network error
+                const isNetworkError = errorMsg.includes('Failed to fetch') || 
+                                     errorMsg.includes('NetworkError') || 
+                                     errorMsg.includes('Network error') ||
+                                     e.name === 'TypeError' && errorMsg.includes('fetch');
+                
+                if (isNetworkError) {
+                    consecutiveNetworkFailures++;
+                    console.log(`[Jobs] Network error count: ${consecutiveNetworkFailures}/${MAX_NETWORK_FAILURES}`);
+                    console.error(`[Jobs] Network error ${consecutiveNetworkFailures}/${MAX_NETWORK_FAILURES}`);
+                } else {
+                    // Non-network errors - reset counter (might be transient)
+                    consecutiveNetworkFailures = 0;
+                }
+                
+                // Reset success flag on error
+                jobsLoadedSuccessfully = false;
+                const container = document.getElementById('jobsList');
+                if (container && consecutiveNetworkFailures < MAX_NETWORK_FAILURES) {
+                    const displayMsg = isNetworkError
+                        ? `Network error (${consecutiveNetworkFailures}/${MAX_NETWORK_FAILURES})`
+                        : errorMsg.length > 50 
+                            ? errorMsg.substring(0, 50) + '...'
+                            : errorMsg;
+                    container.innerHTML = `<div class="loading" style="color: #DC2626; font-size: 0.9rem;">
+                        Error: ${displayMsg}<br/>
+                        ${consecutiveNetworkFailures < MAX_NETWORK_FAILURES ? 'Retrying...' : 'Stopped retrying. Check network.'}
+                    </div>`;
+                }
+                
+                // Don't retry immediately here - let the persistent retry handle it
+                return [];
+            }
+        }
+
+        function renderJobs(jobs) {
+            console.log('[Jobs] renderJobs() called with', jobs.length, 'jobs');
+            console.log('[Jobs] Jobs data:', JSON.stringify(jobs, null, 2));
+            
+            const container = document.getElementById('jobsList');
+            if (!container) {
+                console.error('[Jobs] Container element not found!');
+                console.error('[Jobs] ERROR: jobsList container not found!');
+                // Try to find it again after a delay
+                setTimeout(() => {
+                    const retryContainer = document.getElementById('jobsList');
+                    if (retryContainer) {
+                        console.log('[Jobs] Container found on retry, rendering...');
+                        renderJobs(jobs);
+                    } else {
+                        console.error('[Jobs] Container still not found after retry');
+                    }
+                }, 100);
+                return;
+            }
+            
+            console.log('[Jobs] Container found:', container);
+            console.log('[Jobs] Container innerHTML before:', container.innerHTML.substring(0, 100));
+            
+            container.innerHTML = '';
+            const completion = loadCompletionMap();
+            console.log('[Jobs] Completion map:', completion);
+            
+            if (jobs.length === 0) {
+                const msg = '<div class="loading">No chores today 🎉</div>';
+                container.innerHTML = msg;
+                console.log('[Jobs] No jobs to render');
+                return;
+            }
+            
+            console.log('[Jobs] Rendering', jobs.length, 'jobs');
+            let completedCount = 0;
+            const renderedElements = [];
+            
+            jobs.forEach((job, index) => {
+                const jobId = `${job.kid}|${job.chore}`;
+                const done = Boolean(completion[jobId]);
+                const icon = job.icon || getEventIcon(job.chore);
+                const tile = document.createElement('div');
+                tile.className = 'job' + (done ? ' job-done' : '');
+                tile.innerHTML = `
+                    <input type="checkbox" class="job-toggle" ${done ? 'checked' : ''} aria-label="Toggle ${job.chore}">
+                    <div class="job-main">
+                        <span class="job-icon">${icon}</span>
+                        <span>${job.chore}</span>
+                    </div>
+                `;
+                const checkbox = tile.querySelector('.job-toggle');
+                checkbox.addEventListener('change', () => {
+                    const updated = loadCompletionMap();
+                    if (checkbox.checked) {
+                        updated[jobId] = true;
+                        tile.classList.add('job-done');
+                        completedCount++;
+                    } else {
+                        delete updated[jobId];
+                        tile.classList.remove('job-done');
+                        completedCount--;
+                    }
+                    saveCompletionMap(updated);
+                    updateJobsProgress(completedCount, jobs.length);
+                });
+                console.log(`[Jobs] Appending job ${index + 1}/${jobs.length}:`, job.chore);
+                container.appendChild(tile);
+                renderedElements.push(tile);
+                if (done) completedCount++;
+            });
+            
+            // Force a reflow to ensure elements are rendered
+            container.offsetHeight;
+            
+            console.log('[Jobs] Appended', renderedElements.length, 'elements');
+            console.log('[Jobs] Container children after append:', container.children.length);
+            console.log('[Jobs] Container innerHTML length:', container.innerHTML.length);
+            
+            // Normalize emoji rendering (but don't wait for it)
+            if (window.twemoji) {
+                try {
+                    twemoji.parse(container, { folder: 'svg', ext: '.svg' });
+                } catch (e) {
+                    console.warn('[Jobs] Twemoji parse error:', e);
+                }
+            }
+            
+            updateJobsProgress(completedCount, jobs.length);
+            
+            // Verify rendering after a brief delay
+            setTimeout(() => {
+                const finalCount = container.children.length;
+                console.log('[Jobs] Final container children count:', finalCount);
+                if (finalCount === 0 && jobs.length > 0) {
+                    console.error('[Jobs] WARNING: Jobs rendered but container is empty!');
+                    console.error(`[Jobs] ERROR: ${jobs.length} jobs rendered but 0 elements in container!`);
+                    // Try to force render again
+                    console.log('[Jobs] Attempting emergency re-render...');
+                    const tempContainer = container;
+                    tempContainer.style.display = 'none';
+                    tempContainer.offsetHeight;
+                    tempContainer.style.display = '';
+                } else {
+                    console.log(`[Jobs] Rendered ${finalCount} job elements successfully!`);
+                }
+            }, 100);
+        }
+
+        // Track if jobs have been loaded successfully
+        let jobsLoadedSuccessfully = false;
+        
+        // Persistent retry interval - keeps trying even after failures
+        let persistentRetryInterval = null;
+        
+        // Track consecutive network failures to avoid infinite loops
+        let consecutiveNetworkFailures = 0;
+        const MAX_NETWORK_FAILURES = 3; // Stop retrying after 3 consecutive network failures
+
+        async function refreshJobs() {
+            console.log('[Jobs] refreshJobs() called');
+            
+            // Stop if we've had too many consecutive network failures
+            if (consecutiveNetworkFailures >= MAX_NETWORK_FAILURES) {
+                console.log('[Jobs] Too many network failures, stopping retries');
+                console.error(`[Jobs] Stopped: ${consecutiveNetworkFailures} consecutive network failures`);
+                
+                // Clear retry interval
+                if (persistentRetryInterval) {
+                    clearInterval(persistentRetryInterval);
+                    persistentRetryInterval = null;
+                }
+                
+                // Show error message
+                const container = document.getElementById('jobsList');
+                if (container) {
+                    container.innerHTML = `<div class="loading" style="color: #DC2626;">
+                        Network Error: Unable to fetch chores.<br/>
+                        Check internet connection on Raspberry Pi.<br/>
+                        <button onclick="location.reload()" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: #6366F1; color: white; border: none; border-radius: 6px; cursor: pointer;">Retry</button>
+                    </div>`;
+                }
+                return;
+            }
+            
+            // Ensure page is active before fetching (helps with throttling)
+            if (document.hidden) {
+                await new Promise(resolve => {
+                    const check = () => {
+                        if (!document.hidden) {
+                            document.removeEventListener('visibilitychange', check);
+                            resolve();
+                        }
+                    };
+                    document.addEventListener('visibilitychange', check);
+                    // Timeout after 2s
+                    setTimeout(() => {
+                        document.removeEventListener('visibilitychange', check);
+                        resolve();
+                    }, 2000);
+                });
+            }
+            
+            const jobs = await fetchJobsFromSheet();
+            
+            // If jobs array is returned (even if empty), it means fetch succeeded
+            // If fetchJobsFromSheet throws or returns due to network error, we handle it there
+            if (jobs.length > 0 || (document.getElementById('jobsList')?.innerHTML.includes('No chores'))) {
+                jobsLoadedSuccessfully = true;
+                consecutiveNetworkFailures = 0; // Reset on success
+                console.log('[Jobs] Successfully loaded jobs, stopping persistent retry');
+                console.log(`[Jobs] Loaded ${jobs.length} jobs successfully!`);
+                // Clear persistent retry if we succeeded
+                if (persistentRetryInterval) {
+                    clearInterval(persistentRetryInterval);
+                    persistentRetryInterval = null;
+                }
+            } else {
+                jobsLoadedSuccessfully = false;
+                // Only start persistent retry if we haven't hit max failures
+                if (!persistentRetryInterval && consecutiveNetworkFailures < MAX_NETWORK_FAILURES) {
+                    console.log('[Jobs] Starting persistent retry every 10s');
+                    persistentRetryInterval = setInterval(() => {
+                        if (!jobsLoadedSuccessfully && !document.hidden && consecutiveNetworkFailures < MAX_NETWORK_FAILURES) {
+                            console.log('[Jobs] Persistent retry attempt...');
+                            refreshJobs();
+                        } else if (jobsLoadedSuccessfully || consecutiveNetworkFailures >= MAX_NETWORK_FAILURES) {
+                            clearInterval(persistentRetryInterval);
+                            persistentRetryInterval = null;
+                        }
+                    }, 10000); // Longer interval to avoid hammering
+                }
+            }
+            renderJobs(jobs);
+        }
+        
+
+        function updateJobsProgress(completed, total) {
+            const fill = document.getElementById('jobsProgressFill');
+            const percentEl = document.getElementById('jobsProgressPercent');
+            if (!fill || total === 0) return;
+            const pct = Math.max(0, Math.min(100, Math.round((completed / total) * 100)));
+            fill.style.height = pct + '%';
+            if (percentEl) percentEl.textContent = pct + '%';
+
+            // Celebration once per day when reaching 100%
+            const celebrateKey = getTodayKey() + '-celebrated';
+            if (pct === 100 && !localStorage.getItem(celebrateKey)) {
+                const host = document.querySelector('.jobs');
+                if (host) {
+                    // Delay to allow the height transition to complete (matches CSS transition ~400ms)
+                    setTimeout(() => {
+                        // Fade overlay in/out
+                        const overlay = document.createElement('div');
+                        overlay.className = 'jobs-overlay';
+                        host.appendChild(overlay);
+                        setTimeout(() => overlay.remove(), 2100);
+
+                        // Emoji + text stays longer than overlay
+                        const emojiHolder = document.createElement('div');
+                        emojiHolder.className = 'jobs-overlay-standalone';
+                        emojiHolder.innerHTML = '<div class="jobs-overlay-emoji">🎉</div><div class="jobs-overlay-text">Good Job!</div>';
+                        host.appendChild(emojiHolder);
+                        setTimeout(() => emojiHolder.remove(), 3100);
+                    }, 450);
+                }
+                localStorage.setItem(celebrateKey, 'true');
+            }
+            if (pct < 100) {
+                localStorage.removeItem(celebrateKey);
+            }
+        }
+        
+        // Update greeting based on time of day
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            const greetingEl = document.getElementById('greeting');
+            
+            if (hour < 12) {
+                greetingEl.textContent = 'Good Morning, {{KIDS_NAMES}}! 👋';
+            } else if (hour < 18) {
+                greetingEl.textContent = 'Good Afternoon, {{KIDS_NAMES}}! 👋';
+            } else {
+                greetingEl.textContent = 'Good Evening, {{KIDS_NAMES}}! 👋';
+            }
+        }
+        
+        // Update day of week
+        function updateDayOfWeek() {
+            const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+            const today = new Date().getDay();
+            document.getElementById('dayOfWeek').textContent = `TODAY IS ${days[today]}`;
+        }
+        
+        // Update season and month
+        function updateSeason() {
+            const month = new Date().getMonth();
+            const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                           'July', 'August', 'September', 'October', 'November', 'December'];
+            const seasonNames = ['winter', 'winter', 'spring', 'spring', 'spring', 'summer',
+                               'summer', 'summer', 'fall', 'fall', 'fall', 'winter'];
+            const seasonEmojis = ['❄️', '❄️', '🌸', '🌸', '🌸', '☀️',
+                                 '☀️', '☀️', '🍂', '🍂', '🍂', '❄️'];
+            const monthEmojis = ['❄️', '💕', '🌸', '🌷', '🌺', '☀️',
+                                '🏖️', '🍑', '🍂', '🎃', '🦃', '🎄'];
+            
+            const seasonDisplay = document.getElementById('season');
+            
+            // Update first line with season and emoji at end
+            const firstPart = seasonDisplay.querySelector('.season-part');
+            firstPart.innerHTML = 'The season is <span class="season-answer">' + seasonNames[month] + '</span> ' + seasonEmojis[month];
+            
+            // Update second line with month and emoji at end
+            const secondPart = seasonDisplay.querySelectorAll('.season-part')[1];
+            secondPart.innerHTML = 'The month is <span class="season-answer">' + months[month] + '</span> ' + monthEmojis[month];
+        }
+        
+        // Calculate days until Christmas
+        function updateChristmasCountdown() {
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            let christmas = new Date(currentYear, 11, 25);
+            
+            if (today > christmas) {
+                christmas = new Date(currentYear + 1, 11, 25);
+            }
+            
+            const diff = christmas - today;
+            const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('christmasCountdown').textContent = days;
+        }
+        
+        // Map weather codes to emojis and descriptions
+        const WEATHER_ICONS = {
+            0: { icon: '☀️', desc: 'Clear' },
+            1: { icon: '☀️', desc: 'Clear' },
+            2: { icon: '🌤️', desc: 'Partly Cloudy' },
+            3: { icon: '☁️', desc: 'Cloudy' },
+            45: { icon: '🌫️', desc: 'Foggy' },
+            48: { icon: '🌫️', desc: 'Foggy' },
+            51: { icon: '🌦️', desc: 'Drizzle' },
+            53: { icon: '🌦️', desc: 'Drizzle' },
+            55: { icon: '🌦️', desc: 'Drizzle' },
+            61: { icon: '🌧️', desc: 'Rain' },
+            63: { icon: '🌧️', desc: 'Rain' },
+            65: { icon: '🌧️', desc: 'Heavy Rain' },
+            71: { icon: '❄️', desc: 'Snow' },
+            73: { icon: '❄️', desc: 'Snow' },
+            75: { icon: '❄️', desc: 'Snow' },
+            77: { icon: '❄️', desc: 'Snow' },
+            80: { icon: '🌦️', desc: 'Light Rain' },
+            81: { icon: '🌧️', desc: 'Rain' },
+            82: { icon: '🌧️', desc: 'Heavy Rain' },
+            85: { icon: '❄️', desc: 'Snow' },
+            86: { icon: '❄️', desc: 'Heavy Snow' },
+            95: { icon: '⛈️', desc: 'Thunderstorm' },
+            96: { icon: '⛈️', desc: 'Thunderstorm' },
+            99: { icon: '⛈️', desc: 'Thunderstorm' }
+        };
+        
+        const LATITUDE = {{LATITUDE}};
+        const LONGITUDE = {{LONGITUDE}};
+        
+        // Convert temperature to kid-friendly words
+        function getTemperatureWord(tempFahrenheit) {
+            if (tempFahrenheit >= 85) return 'Really Hot';
+            if (tempFahrenheit >= 75) return 'Hot';
+            if (tempFahrenheit >= 60) return 'Warm';
+            if (tempFahrenheit >= 50) return 'Nice';
+            if (tempFahrenheit >= 40) return 'Chilly';
+            if (tempFahrenheit >= 30) return 'Cold';
+            return 'Really Cold';
+        }
+        
+        // Fetch weather data
+        async function fetchWeather() {
+            try {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${LATITUDE}&longitude=${LONGITUDE}&current=weather_code,temperature_2m&temperature_unit=fahrenheit&timezone=auto`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.current) {
+                    const weatherCode = data.current.weather_code;
+                    const tempFahrenheit = Math.round(data.current.temperature_2m);
+                    
+                    const weatherInfo = WEATHER_ICONS[weatherCode] || { icon: '☀️', desc: 'Clear' };
+                    const tempWord = getTemperatureWord(tempFahrenheit);
+                    
+                    // Create natural combination like "Warm and Rainy" or "Hot and Clear"
+                    const weatherCondition = weatherInfo.desc.charAt(0).toUpperCase() + weatherInfo.desc.slice(1).toLowerCase();
+                    const combinedDescription = `${tempWord} and ${weatherCondition}`;
+                    
+                    document.getElementById('weatherIcon').textContent = weatherInfo.icon;
+                    document.getElementById('weatherDesc').textContent = combinedDescription;
+                    
+                    // Normalize emoji rendering for weather
+                    if (window.twemoji) {
+                        const weatherCard = document.querySelector('.weather');
+                        twemoji.parse(weatherCard, { folder: 'svg', ext: '.svg' });
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching weather:', error);
+                // Keep default values on error
+            }
+        }
+        
+        // Initialize on load
+        updateGreeting();
+        updateDayOfWeek();
+        updateSeason();
+        updateChristmasCountdown();
+        fetchWeather();
+        fetchCalendarEvents();
+        fetchWeekEvents();
+        
+
+        // Initialize jobs fetch - optimized for immediate load
+        async function initializeJobs() {
+            console.log('[Jobs] Initializing jobs fetch...');
+            
+            // Small delay to let page fully initialize and be recognized as "active"
+            // This is critical for kiosk mode - browser needs time to register page as foreground
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            // Force a repaint to ensure page is "active" - helps with background throttling
+            document.body.style.display = 'none';
+            document.body.offsetHeight; // Trigger reflow
+            document.body.style.display = '';
+            
+            // Use requestAnimationFrame to ensure we're in an active frame
+            // Double RAF ensures we're definitely in next frame cycle
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    // Now start the fetch
+                    refreshJobs();
+                });
+            });
+            
+            // Also try after a short delay as backup (in case page isn't fully ready)
+            setTimeout(() => {
+                if (!jobsLoadedSuccessfully) {
+                    console.log('[Jobs] Backup retry after 1s...');
+                    refreshJobs();
+                }
+            }, 1000);
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('[Jobs] DOM loaded, initializing...');
+                initializeJobs();
+            });
+        } else {
+            // DOM already loaded
+            console.log('[Jobs] DOM already loaded, initializing...');
+            initializeJobs();
+        }
+        
+        // Retry jobs fetch when page becomes visible or focused (helps with background throttling)
+        let visibilityRetryTimeout = null;
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && !jobsLoadedSuccessfully) {
+                // Clear any pending retry
+                if (visibilityRetryTimeout) {
+                    clearTimeout(visibilityRetryTimeout);
+                }
+                // Retry after a short delay when page becomes visible
+                visibilityRetryTimeout = setTimeout(() => {
+                    console.log('[Jobs] Page visible, retrying jobs fetch...');
+                    refreshJobs();
+                }, 1000);
+            }
+        });
+        
+        // Also retry on window focus
+        window.addEventListener('focus', () => {
+            if (!jobsLoadedSuccessfully) {
+                console.log('[Jobs] Window focused, retrying jobs fetch...');
+                setTimeout(() => refreshJobs(), 500);
+            }
+        });
+        
+        // Update every 5 minutes
+        setInterval(() => {
+            updateGreeting();
+            updateDayOfWeek();
+            updateSeason();
+            updateChristmasCountdown();
+            fetchWeather();
+            fetchCalendarEvents();
+            fetchWeekEvents();
+        }, 300000);
+
+        // Poll jobs every 15 minutes, but only if page is visible
+        setInterval(() => {
+            if (!document.hidden) {
+            refreshJobs();
+            }
+        }, 900000);
+    </script>
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+</body>
+</html>
