@@ -56,7 +56,7 @@ The packaged file contains all necessary configuration and can be deployed direc
 
 ## Screenshot
 
-![Dashboard Screenshot](screenshot.png)
+![Dashboard Screenshot](dashboard.png)
 
 *Note: Add a screenshot of your dashboard here*
 
