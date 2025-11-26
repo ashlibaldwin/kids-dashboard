@@ -1,4 +1,4 @@
-# KIS Dashboard
+# KIDS Dashboard
 
 A beautiful, interactive dashboard for kids featuring daily schedules, weather, chores, and more.
 
